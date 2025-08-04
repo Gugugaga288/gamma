@@ -1,0 +1,1190 @@
+if _G.Real then
+game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("-rs")
+wait(2.250)
+game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("-rs")
+wait(2.250)
+end
+_G.Real=true
+game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("-pd")
+wait(2.250)
+local Mode='Dual-Wielder'
+local WingAnim= 'Dual'
+local deltaTime=.1-- Anim Speed
+
+--Default Settings
+local osclock=os.clock
+local tspawn=task.spawn
+local twait=task.wait
+local schar=string.char
+local ssub=string.sub
+local sfind=string.find
+local supper=string.upper
+local mrandom=math.random
+local sin=math.sin
+local cos=math.cos
+local abs=math.abs
+local rad=math.rad
+local min=math.min
+local clamp=math.clamp
+local tinsert=table.insert
+local tclear=table.clear
+local tclone=table.clone
+local tfind=table.find
+local tunpack=table.unpack
+local Player=game.Players.LocalPlayer
+local Char=Player.Character
+local Torso = Char.Torso
+local HumanoidRootPart = Char:WaitForChild("HumanoidRootPart") 
+local RArm=Char["Right Arm"]
+local LArm=Char["Left Arm"]
+local RLeg=Char["Right Leg"]
+local LLeg=Char["Left Leg"]	
+local next=next
+local pcall=pcall
+local xpcall=xpcall
+local type=type
+local typeof=typeof
+local game=game
+local i=Instance.new
+local v2=Vector2.new 
+local v3=Vector3.new
+local c3=Color3.new 
+local c3rgb=Color3.fromRGB
+local cf=CFrame.new
+local cfl=CFrame.lookAt
+local angles=CFrame.Angles
+local euler=CFrame.fromEulerAnglesXYZ
+local u2=UDim2.new 
+local e=Enum 
+local rp=RaycastParams.new 
+local cs=ColorSequence.new 
+local csk=ColorSequenceKeypoint.new 
+local sine=0
+local v3_0=v3(0,0,0)
+local v3_101=v3(1,0,1)
+local v3_010=v3(0,1,0)
+local v3_001=v3(0,0,1)
+local cf_0=cf(0,0,0)
+local v3_xz=v3_101*10
+local v3_xzL=v3_101*250.1
+local v3_net=v3_010*25.01
+local Vfw = 0 -- Forward velocity
+local Vrt = 0 -- Right velocity
+local lastPos = HumanoidRootPart.Position
+local walking = false
+local humws=game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local function rs(l) 
+	l=l or mrandom(8,15) 
+	local s="" 
+	for i=1,l do 
+		if mrandom(1,2)==1 then 
+			s=s..schar(mrandom(65,90)) 
+		else 
+			s=s..schar(mrandom(97,122)) 
+		end 
+	end 
+	return s 
+end
+local function getMetamethodFromErrorStack(userdata,f,test)
+	local ret=nil
+	xpcall(f,function()
+		ret=debug.info(2,"f")
+	end,userdata,nil,0)
+	if (type(ret)~="function") or not test(ret) then
+		return f
+	end
+	return ret
+end
+local insSet=getMetamethodFromErrorStack(game,function(a,b,c) a[b]=c end,function(f) local a=i("Folder") local b=rs() f(a,"Name",b) return a.Name==b end)
+local insGet=getMetamethodFromErrorStack(game,function(a,b) return a[b] end,function(f) local a=i("Folder") local b=rs() a.Name=b return f(a,"Name")==b end)
+local cfGet=getMetamethodFromErrorStack(cf_0,function(a,b) return a[b] end,function(f) return f(cf(1,2,3),"Position")==v3(1,2,3) end)
+local cfMul=getMetamethodFromErrorStack(cf_0,function(a,b) return a*b end,function(f) return angles(1,2,3)*angles(1,2,3)==f(angles(1,2,3),angles(1,2,3)) end)
+local cfAdd=getMetamethodFromErrorStack(cf_0,function(a,b) return a+b end,function(f) return cf(1,2,3)+v3(1,2,3)==f(cf(1,2,3),v3(1,2,3)) end)
+local v3Get=getMetamethodFromErrorStack(v3_0,function(a,b) return a[b] end,function(f) return v3(1,2,3).Unit==f(v3(1,2,3),"Unit") end)
+local Clone=insGet(game,"Clone")
+local ClearAllChildren=insGet(game,"ClearAllChildren")
+local Destroy=insGet(game,"Destroy")
+local IsA=insGet(game,"IsA")
+local FindFirstChildOfClass=insGet(game,"FindFirstChildOfClass")
+local FindFirstChildWhichIsA=insGet(game,"FindFirstChildWhichIsA")
+local GetChildren=insGet(game,"GetChildren")
+local GetDescendants=insGet(game,"GetDescendants")
+local IsDescendantOf=insGet(game,"IsDescendantOf")
+local GetPropertyChangedSignal=insGet(game,"GetPropertyChangedSignal")
+local plrs=FindFirstChildOfClass(game,"Players")
+local rus=FindFirstChildOfClass(game,"RunService")
+local ws=FindFirstChildOfClass(game,"Workspace")
+local uis=FindFirstChildOfClass(game,"UserInputService")
+local gs=FindFirstChildOfClass(game,"GuiService")
+local lp=insGet(plrs,"LocalPlayer")
+local pg=FindFirstChildOfClass(lp,"PlayerGui")
+local mouse=insGet(lp,"GetMouse")(lp)
+local stepped=insGet(rus,"Stepped")
+local heartbeat=insGet(rus,"Heartbeat")
+local renderstepped=insGet(rus,"RenderStepped")
+local GetPlayers=insGet(plrs,"GetPlayers")
+local Raycast=insGet(ws,"Raycast")
+local Connect=heartbeat.Connect
+local Disconnect=Connect(GetPropertyChangedSignal(game,"CreatorId"),type).Disconnect
+local Wait=heartbeat.Wait
+local GetMouseLocation=insGet(uis,"GetMouseLocation")
+local GetFocusedTextBox=insGet(uis,"GetFocusedTextBox")
+local GetMouseDelta=insGet(uis,"GetMouseDelta")
+local IsMouseButtonPressed=insGet(uis,"IsMouseButtonPressed")
+local IsKeyDown=insGet(uis,"IsKeyDown")
+local Inverse=cfGet(cf_0,"Inverse")
+local Lerp=cfGet(cf_0,"Lerp")
+
+local function gp(p,n,cl)
+	for i,v in next,GetChildren(p) do
+		if IsA(v,cl) and (insGet(v,"Name")==n) then
+			return v
+		end
+	end
+	return nil
+end
+local function timegp(p,n,c,t)
+	t=osclock()+t
+	while t>osclock() do
+		local r=gp(p,n,c)
+		if r then
+			return r
+		end
+		Wait(stepped)
+	end
+	return nil
+end
+--local function reanimate()
+     
+local CountSCIFIMOVIELOL = 1
+function SCIFIMOVIELOL(Part0,Part1,Position,Angle)
+	local AlignPos =i('AlignPosition', Part1); AlignPos.Name = "AliP_"..CountSCIFIMOVIELOL
+	AlignPos.ApplyAtCenterOfMass = true;
+	AlignPos.MaxForce = 5772000--67752;
+	AlignPos.MaxVelocity = math.huge/9e110;
+	AlignPos.ReactionForceEnabled = false;
+	AlignPos.Responsiveness = 200;
+	AlignPos.RigidityEnabled = false;
+	local AlignOri =i('AlignOrientation', Part1); AlignOri.Name = "AliO_"..CountSCIFIMOVIELOL
+	AlignOri.MaxAngularVelocity = math.huge/9e110;
+	AlignOri.MaxTorque = 5772000
+	AlignOri.PrimaryAxisOnly = false;
+	AlignOri.ReactionTorqueEnabled = false;
+	AlignOri.Responsiveness = 200;
+	AlignOri.RigidityEnabled = false;
+	local AttachmentA=i('Attachment',Part1); AttachmentA.Name = "Ath_"..CountSCIFIMOVIELOL
+	local AttachmentB=i('Attachment',Part0); AttachmentB.Name = "Ath_"..CountSCIFIMOVIELOL
+	AttachmentA.Orientation = Angle or v3(0,0,0)
+	AttachmentA.Position = Position or v3(0,0,0)
+	AlignPos.Attachment1 = AttachmentA;
+	AlignPos.Attachment0 = AttachmentB;
+	AlignOri.Attachment1 = AttachmentA;
+	AlignOri.Attachment0 = AttachmentB;
+	CountSCIFIMOVIELOL = CountSCIFIMOVIELOL + 1
+	return {AlignPos,AlignOri,AttachmentA,AttachmentB}
+end
+
+
+game:FindFirstChildOfClass("Players").LocalPlayer["Character"].Archivable = true
+local hatnameclone = {}
+for _,v in next, game:FindFirstChildOfClass("Players").LocalPlayer["Character"]:GetChildren() do
+	if v:IsA("Accessory") then
+		if hatnameclone[v.Name] then
+			if hatnameclone[v.Name] == "s" then
+				hatnameclone[v.Name] = {}
+			end
+			table.insert(hatnameclone[v.Name],v)
+		else
+			hatnameclone[v.Name] = "s"
+		end
+	end
+end
+for _,v in pairs(hatnameclone) do
+	if type(v) == "table" then
+		local num = 1
+		for _,w in pairs(v) do
+			w.Name = w.Name..num
+			num = num + 1
+		end
+	end
+end
+hatnameclone = nil
+
+local DeadChar = game:FindFirstChildOfClass("Players").LocalPlayer.Character
+
+local fldr =i("Folder",game:FindFirstChildOfClass("Players").LocalPlayer["Character"])
+fldr.Name = "DMYF"
+local CloneChar = DeadChar:Clone()
+local ANIMATIONHERE
+if CloneChar:FindFirstChild("Animate") then
+	ANIMATIONHERE = CloneChar:FindFirstChild("Animate"):Clone()
+	CloneChar:FindFirstChild("Animate"):Destroy()
+end
+if DeadChar:FindFirstChild("Animate") then
+    DeadChar.Animate:Destroy()
+end
+if CloneChar:FindFirstChildOfClass("Folder") then CloneChar:FindFirstChildOfClass("Folder"):Destroy() end
+if CloneChar.Torso:FindFirstChild("Neck") then
+	local Clonessss = CloneChar.Torso:FindFirstChild("Neck"):Clone()
+	Clonessss.Part0 = nil
+	Clonessss.Part1 = DeadChar.Head
+	Clonessss.Parent = DeadChar.Torso
+end
+CloneChar.Parent = fldr
+CloneChar.HumanoidRootPart.CFrame = DeadChar.HumanoidRootPart.CFrame
+CloneChar.Humanoid.BreakJointsOnDeath = false
+CloneChar.Name = "non"
+CloneChar.Humanoid.DisplayDistanceType = "None"
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		local topacc = false
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+		v.Handle.Massless = true
+		v.Handle.CanCollide = false
+		if v.Handle:FindFirstChildOfClass("Attachment") then
+			local ath__ = v.Handle:FindFirstChildOfClass("Attachment")
+			if ath__.Name == "HatAttachment" or ath__.Name == "HairAttachment" or ath__.Name == "FaceFrontAttachment" or ath__.Name == "FaceCenterAttachment" then
+				topacc = ath__.Name
+			end
+		end
+        local bv =i("BodyVelocity",v.Handle)
+		bv.Velocity = v3(0,0,0)
+		coroutine.wrap(function()
+			if topacc then
+				local allthings = SCIFIMOVIELOL(v.Handle,DeadChar.Torso,v3(0,1.5,0)+ (DeadChar.Head[topacc].Position + (v.Handle[topacc].Position*-1)),v3(0,0,0))
+				local normaltop = allthings[1].Attachment1
+				local alipos = allthings[1]
+				local alirot = allthings[2]
+				local p0 = v.Handle
+				local p1 = DeadChar.Head
+				alipos.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				alirot.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				while true do
+					game:GetService("RunService").RenderStepped:wait()
+					if HumanDied then break end
+					coroutine.wrap(function()
+						if alipos.Attachment1 == normaltop then
+							p0.CFrame = p0.CFrame:lerp((((DeadChar.Torso.CFrame * cf(0,1.5,0)) * p1[topacc].CFrame) * p0[topacc].CFrame:inverse()),1)
+						else
+							v.Handle.CFrame = v.Handle.CFrame:lerp(alipos.Attachment1.Parent.CFrame * cf(alipos.Attachment1.Position) * CFrame.Angles(math.rad(alipos.Attachment1.Rotation.X),math.rad(alipos.Attachment1.Rotation.Y),math.rad(alipos.Attachment1.Rotation.Z)),1)
+						end
+					end)()
+				end
+			else
+				SCIFIMOVIELOL(v.Handle,CloneChar[v.Name].Handle,v3(0,0,0),v3(0,0,0))
+			end
+		end)()
+    end
+end
+
+local a = DeadChar.Torso
+local b = DeadChar.HumanoidRootPart
+local c = DeadChar.Humanoid
+a.Parent = game:FindFirstChildOfClass("Workspace")
+c.Parent = game:FindFirstChildOfClass("Workspace")
+local told = a:Clone()
+local told1 = c:Clone()
+b["RootJoint"].Part0 = told
+b["RootJoint"].Part1 = DeadChar.Head
+a.Name = "torso"
+a.Neck:Destroy()
+c.Name = "Mizt Hub Best"
+told.Parent = DeadChar
+told1.Parent = DeadChar
+DeadChar.PrimaryPart = told
+told1.Health = 0
+b:Destroy()
+a.Parent = DeadChar
+c.Parent = DeadChar
+told:Destroy()
+told1:Destroy()
+a.Name = "Torso"
+
+if CloneChar.Head:FindFirstChildOfClass("Decal") then
+CloneChar.Head:FindFirstChildOfClass("Decal").Transparency = 1 end
+if DeadChar:FindFirstChild("Animate") then DeadChar:FindFirstChild("Animate"):Destroy() end
+
+local Collider
+function UnCollide()
+    if HumanDied then Collider:Disconnect(); return end
+    --[[for _,Parts in next, CloneChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+            Parts.CanCollide = false 
+        end 
+    end]]
+    for _,Parts in next, DeadChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+        Parts.CanCollide = false
+        end 
+    end 
+end
+Collider = game:GetService("RunService").Stepped:Connect(UnCollide)
+
+local resetBindable =i("BindableEvent")
+resetBindable.Event:connect(function()
+    game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+	resetBindable:Destroy()
+	HumanDied = true
+    pcall(function()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+		DeadChar.Head:Destroy()
+		DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+		if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+	end)
+end)
+game:GetService("StarterGui"):SetCore("ResetButtonCallback", resetBindable)
+
+coroutine.wrap(function()
+    while true do
+        game:GetService("RunService").RenderStepped:wait()
+        if not CloneChar or not CloneChar:FindFirstChild("Head") or not CloneChar:FindFirstChildOfClass("Humanoid") or CloneChar:FindFirstChildOfClass("Humanoid").Health <= 0 and not DeadChar or not DeadChar:FindFirstChild("Head") or not DeadChar:FindFirstChildOfClass("Humanoid") or DeadChar:FindFirstChildOfClass("Humanoid").Health <= 0 then 
+            HumanDied = true
+            pcall(function()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+				DeadChar.Head:Destroy()
+				DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+				if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+			end)
+            if resetBindable then
+                game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+                resetBindable:Destroy()
+            end
+            break
+        end		
+    end
+end)()
+
+
+SCIFIMOVIELOL(DeadChar["Head"],CloneChar["Head"])
+SCIFIMOVIELOL(DeadChar["Torso"],CloneChar["Torso"])
+SCIFIMOVIELOL(DeadChar["Left Arm"],CloneChar["Left Arm"])
+SCIFIMOVIELOL(DeadChar["Right Arm"],CloneChar["Right Arm"])
+SCIFIMOVIELOL(DeadChar["Left Leg"],CloneChar["Left Leg"])
+SCIFIMOVIELOL(DeadChar["Right Leg"],CloneChar["Right Leg"])
+
+for _,v in pairs(DeadChar:GetChildren()) do
+	if v:IsA("BasePart") and v.Name ~= "Head" then
+		--[[local bv =i("BodyVelocity",v)
+		bv.Velocity = v3(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = CloneChar[v.Name].CFrame
+			end
+		end)()--]]
+	elseif v:IsA("BasePart") and v.Name == "Head" then
+		local bv =i("BodyVelocity",v)
+		bv.Velocity = v3(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = DeadChar.Torso.CFrame * cf(0,1.5,0)
+			end
+		end)()
+	end
+end
+
+for _,BodyParts in next, CloneChar:GetDescendants() do
+if BodyParts:IsA("BasePart") or BodyParts:IsA("Part") then
+BodyParts.Transparency = 1 end end
+game:GetService("RunService").RenderStepped:wait()
+game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+game:FindFirstChildOfClass("Workspace"):FindFirstChildOfClass("Camera").CameraSubject = CloneChar.Humanoid
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+	end
+end
+
+--if ANIMATIONHERE then ANIMATIONHERE.Parent = CloneChar end
+wait()
+
+local data = {}
+
+
+local script = game:GetObjects("rbxassetid://5446036971")[1]
+
+script.WingPiece.qPerfectionWeld:Destroy()
+
+do
+local NEVER_BREAK_JOINTS = false
+
+local function CallOnChildren(Instance, FunctionToCall)
+	FunctionToCall(Instance)
+
+	for _, Child in next, Instance:GetChildren() do
+		CallOnChildren(Child, FunctionToCall)
+	end
+end
+
+local function GetBricks(StartInstance)
+	local List = {}
+	CallOnChildren(StartInstance, function(Item)
+		if Item:IsA("BasePart") then
+			List[#List+1] = Item;
+		end
+	end)
+
+	return List
+end
+
+
+local function Modify(Instance, Values)
+	assert(type(Values) == "table", "Values is not a table");
+
+	for Index, Value in next, Values do
+		if type(Index) == "number" then
+			Value.Parent = Instance
+		else
+			Instance[Index] = Value
+		end
+	end
+	return Instance
+end
+
+local function Make(ClassType, Properties)
+	return Modify(i(ClassType), Properties)
+end
+
+local Surfaces = {"TopSurface", "BottomSurface", "LeftSurface", "RightSurface", "FrontSurface", "BackSurface"}
+local HingSurfaces = {"Hinge", "Motor", "SteppingMotor"}
+
+local function HasWheelJoint(Part)
+	for _, SurfaceName in pairs(Surfaces) do
+		for _, HingSurfaceName in pairs(HingSurfaces) do
+			if Part[SurfaceName].Name == HingSurfaceName then
+				return true
+			end
+		end
+	end
+	
+	return false
+end
+
+local function ShouldBreakJoints(Part)
+	if NEVER_BREAK_JOINTS then
+		return false
+	end
+	
+	if HasWheelJoint(Part) then
+		return false
+	end
+	
+	local Connected = Part:GetConnectedParts()
+	
+	if #Connected == 1 then
+		return false
+	end
+	
+	for _, Item in pairs(Connected) do
+		if HasWheelJoint(Item) then
+			return false
+		elseif not Item:IsDescendantOf(script.Parent) then
+			return false
+		end
+	end
+	
+	return true
+end
+
+local function WeldTogether(Part0, Part1, JointType, WeldParent)
+
+	JointType = JointType or "Weld"
+	local RelativeValue = Part1:FindFirstChild("qRelativeCFrameWeldValue")
+	
+	local NewWeld = Part1:FindFirstChild("qCFrameWeldThingy") or i(JointType)
+	Modify(NewWeld, {
+		Name = "qCFrameWeldThingy";
+		Part0  = Part0;
+		Part1  = Part1;
+		C0     = cf();--Part0.CFrame:inverse();
+		C1     = RelativeValue and RelativeValue.Value or Part1.CFrame:toObjectSpace(Part0.CFrame); --Part1.CFrame:inverse() * Part0.CFrame;-- Part1.CFrame:inverse();
+		Parent = Part1;
+	})
+
+	if not RelativeValue then
+		RelativeValue = Make("CFrameValue", {
+			Parent     = Part1;
+			Name       = "qRelativeCFrameWeldValue";
+			Archivable = true;
+			Value      = NewWeld.C1;
+		})
+	end
+
+	return NewWeld
+end
+
+local function WeldParts(Parts, MainPart, JointType, DoNotUnanchor)
+
+	for _, Part in pairs(Parts) do
+		if ShouldBreakJoints(Part) then
+			Part:BreakJoints()
+		end
+	end
+	
+	for _, Part in pairs(Parts) do
+		if Part ~= MainPart then
+			WeldTogether(MainPart, Part, JointType, MainPart)
+		end
+	end
+
+	if not DoNotUnanchor then
+		for _, Part in pairs(Parts) do
+			Part.Anchored = false
+		end
+		MainPart.Anchored = false
+	end
+end
+-- Replace the existing joint setup code with this:
+local c = game:GetService("Players").LocalPlayer.Character
+if not c then return end
+--local ws = game:GetService("Workspace")
+c.AncestryChanged:Connect(function()
+    if not c:IsDescendantOf(ws) then
+        c = nil
+    end
+end)
+
+local function gp(parent, name, classname)
+    if typeof(parent) == "Instance" then
+        for i, v in pairs(parent:GetChildren()) do
+            if (v.Name == name) and v:IsA(classname) then
+                return v
+            end
+        end
+    end
+    return nil
+end
+
+local function part(name)
+    local part = gp(c, name, "BasePart")
+    if not part then
+        part = i("Part")
+        part.Name = name
+        part.Transparency = 1
+        part.CanCollide = false
+        part.Massless = true
+        part.Size =v3(1, 1, 1)
+        part.Parent = c
+    end
+    local size = part.Size
+    part.Destroying:Connect(function()
+        part = nil
+        c = nil
+    end)
+    local con = nil
+    con = game:GetService("RunService").Stepped:Connect(function()
+        if not part then
+            return con:Disconnect()
+        end
+        part.Anchored = false
+        part.Name = name
+        part.Size = size
+        part.CanQuery = false
+        part.CanTouch = false
+        part.Parent = c
+    end)
+    return part
+end
+
+
+
+local function joint(name, parent, Part0, Part1, fakejoint)
+    fakejoint.C0 = cf()
+    fakejoint.C1 = cf()
+    local joint = gp(parent, name, "Motor6D")
+    if joint then
+        fakejoint.C0 = joint.C0
+        fakejoint.C1 = joint.C1
+    end
+    local con = nil
+    con = game:GetService("RunService").Stepped:Connect(function()
+        if not c then
+            return con:Disconnect()
+        end
+        local fix = nil
+        fix = function()
+            if not joint then 
+                joint = i("Motor6D")
+                joint.Changed:Connect(fix)
+                joint.Destroying:Connect(function() joint = nil end)
+            end
+            joint.Part0 = Part0
+            joint.Part1 = Part1
+            joint.C0 = fakejoint.C0
+            joint.C1 = fakejoint.C1
+            joint.Parent = parent
+        end
+        fix()
+    end)
+end
+local Torso = part("Torso")
+local RightArm = part("Right Arm")
+local LeftArm = part("Left Arm")
+local LeftLeg = part("Left Leg")
+local RightLeg = part("Right Leg")
+local Head = part("Head")
+local HumanoidRootPart = part("HumanoidRootPart")
+local RootJoint = {}
+local RightShoulder = {}
+local LeftShoulder = {}
+local RightHip = {}
+local LeftHip = {}
+local Neck = {}
+joint("Neck", Torso, Torso, Head, Neck)
+joint("RootJoint", HumanoidRootPart, HumanoidRootPart, Torso, RootJoint)
+joint("Right Shoulder", Torso, Torso, RightArm, RightShoulder)joint("Left Shoulder", Torso, Torso, LeftArm, LeftShoulder)
+joint("Right Hip", Torso, Torso, RightLeg, RightHip)
+joint("Left Hip", Torso, Torso, LeftLeg, LeftHip)
+local function PerfectionWeld()	
+     local Parts = GetBricks(script.WingPiece)
+	WeldParts(Parts, script.WingPiece.Main, "Weld", false)
+end
+PerfectionWeld()
+end
+local animate = gp(c, "Animate", "LocalScript")
+if animate then
+    animate.Disabled = true
+end
+
+local hum = c:FindFirstChildOfClass("Humanoid") or i("Humanoid", c)
+local states = {
+    [0]=false,[8]=true,
+    [10]=false,[12]=false,
+    [11]=false,[1]=false,
+    [2]=true,[3]=true,
+    [7]=true,[6]=false,
+    [5]=true,[13]=false,
+    [14]=false,[15]=false,
+    [4]=false,[16]=false
+}
+for i, v in pairs(states) do
+    hum:SetStateEnabled(i, v)
+end
+for i, v in pairs(hum:GetPlayingAnimationTracks()) do
+    v:Stop()
+end
+hum.RigType = Enum.HumanoidRigType.R6
+hum.BreakJointsOnDeath = false
+hum.RequiresNeck = false
+--hum.MaxHealth = 0
+--hum.Health = 0
+hum:ChangeState(8)
+--end
+
+
+--wait(4)
+-----------------------------------------------------------------
+----------------------- NAMELESS+GLITCHER -----------------------
+------------------------------------------------------------------
+game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("-net")
+--local t=reanimate()
+--local getJoint=t.getJoint
+local WingPiece = script:WaitForChild'WingPiece'
+WingPiece.Parent=nil
+local WingAnims={}
+local G=c3rgb(100, 100, 100)
+local A=c3rgb(255,255,255)
+local W=c3rgb(255, 255, 255)
+local H = cs{
+    csk(0, A),
+    csk(0.500, G),
+    csk(1, W)
+}
+local Rq=i("UIGradient")
+local Text2 =i("UIStroke")
+local billboard2 =i("BillboardGui")
+billboard2.Name = "Test"
+billboard2.Size = u2(4, 0, 1.2, 0)
+billboard2.StudsOffset = v3(0, 5, 0)
+billboard2.Adornee = Player.Character.Head
+billboard2.AlwaysOnTop = true
+billboard2.Parent = Player.Character.Head
+local Q=i("TextLabel")
+Q.Text = "Dual-Wielder"
+Q.Font = Enum.Font.Sarpanch
+Q.TextColor3 = c3rgb(0, 0, 0)
+Q.BackgroundTransparency = 1
+Q.Parent = billboard2
+Q.TextSize=14
+Q.Position = u2(0.5, -50, 1, -15) 
+--Q.Size = u2(5, 0, 3.5, 0)
+Q.Rotation = 0
+Q.TextScaled=true
+Text2.Thickness = 1
+Text2.Color = c3rgb(255,255,255)
+Text2.Parent = Q
+Text2.LineJoinMode = Enum.LineJoinMode.Miter
+Rq.Parent = Text2
+Rq.Color = H
+Rq.Name = "Test3"
+Rq.Enabled = true 
+Rq.Rotation = 85
+Rq.Offset = v2(-1,0)
+
+
+local modeInfo={
+     {Name="Nameless",WalkSpeed=16,Font=Enum.Font.Sarpanch,WingAnim="Nameless1"};
+     {Name="Swordsman",WalkSpeed=10,Font=Enum.Font.Sarpanch,WingAnim="Swords"};
+     {Name="Dual-Wielder",WalkSpeed=16,Font=Enum.Font.Sarpanch,WingAnim="Dual"};
+     {Name="Apex",WalkSpeed=5,Font=Enum.Font.Sarpanch,WingAnim="Clock"};
+     {Name="Abyssal",WalkSpeed=10,Font=Enum.Font.Sarpanch,WingAnim="Hunter"};
+     {Name="Fallen",Walk=8.5,Font=Enum.Font.Sarpanch,WingAnim="Memory"}
+}
+
+-- Wait for character to fully load
+repeat wait() until Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
+NewInstance = function(instance,parent,properties)
+	local inst =i(instance)
+	inst.Parent = parent
+	if(properties)then
+		for i,v in next, properties do
+			pcall(function() inst[i] = v end)
+		end
+	end
+	return inst;
+end
+function newMotor(P0,P1,C0,C1)
+	local motor = NewInstance('Motor', P0, {
+        Part0 = P0,
+        Part1 = P1,
+        C0 = C0 or cf(),
+        C1 = C1 or cf()
+    })
+    motor.MaxVelocity = 0.1 -- Smoother movement
+    return motor
+end
+local welds = {}
+
+-- Call this after your character is set up
+--setupJoints()
+
+
+
+WeldDefaults = {}
+for i = 1, #welds do
+    local v = welds[i]
+    WeldDefaults[i] = v.C0
+end
+local function setupReanimatedJoints()
+    local ReanimatedChar = CloneChar
+    local ReanimatedTorso = ReanimatedChar:FindFirstChild("Torso") or ReanimatedChar:FindFirstChild("UpperTorso")
+    local ReanimatedHRP = ReanimatedChar:FindFirstChild("HumanoidRootPart")
+    local Neck = i("Motor6D")
+    Neck.Name = "Neck"
+    Neck.Part0 = ReanimatedTorso
+    Neck.Part1 = ReanimatedChar.Head
+    Neck.C0 = CFrame.new(0, 1.5, 0)
+    Neck.C1 = CFrame.new()
+    Neck.Parent = ReanimatedTorso
+    local RootJoint = i("Motor6D")
+    RootJoint.Name = "RootJoint"
+    RootJoint.Part0 = ReanimatedHRP
+    RootJoint.Part1 = ReanimatedTorso
+    RootJoint.C0 = CFrame.new()
+    RootJoint.C1 = CFrame.new()
+    RootJoint.Parent = ReanimatedHRP
+    local RightShoulder = i("Motor6D")
+    RightShoulder.Name = "Right Shoulder"
+    RightShoulder.Part0 = ReanimatedTorso
+    RightShoulder.Part1 = ReanimatedChar["Right Arm"]
+    RightShoulder.C0 = CFrame.new(1.5, 0.5, 0)
+    RightShoulder.C1 = CFrame.new(0, 0.5, 0)
+    RightShoulder.Parent = ReanimatedTorso
+    local LeftShoulder = i("Motor6D")
+    LeftShoulder.Name = "Left Shoulder"
+    LeftShoulder.Part0 = ReanimatedTorso
+    LeftShoulder.Part1 = ReanimatedChar["Left Arm"]
+    LeftShoulder.C0 = CFrame.new(-1.5, 0.5, 0)
+    LeftShoulder.C1 = CFrame.new(0, 0.5, 0)
+    LeftShoulder.Parent = ReanimatedTorso
+    local RightHip = i("Motor6D")
+    RightHip.Name = "Right Hip"
+    RightHip.Part0 = ReanimatedTorso
+    RightHip.Part1 = ReanimatedChar["Right Leg"]
+    RightHip.C0 = CFrame.new(0.5, -1, 0)
+    RightHip.C1 = CFrame.new(0, 1, 0)
+    RightHip.Parent = ReanimatedTorso
+    local LeftHip = i("Motor6D")
+    LeftHip.Name = "Left Hip"
+    LeftHip.Part0 = ReanimatedTorso
+    LeftHip.Part1 = ReanimatedChar["Left Leg"]
+    LeftHip.C0 = CFrame.new(-0.5, -1, 0)
+    LeftHip.C1 = CFrame.new(0, 1, 0)
+    LeftHip.Parent = ReanimatedTorso
+    return {
+        Neck = Neck,
+        RootJoint = RootJoint,
+        RightShoulder = RightShoulder,
+        LeftShoulder = LeftShoulder,
+        RightHip = RightHip,
+        LeftHip = LeftHip
+    }
+end
+local welds = setupReanimatedJoints()
+local Neck, RootJoint, RightHip, RightShoulder, LeftHip, LeftShoulder =unpack(welds)
+function Weld(part0,part1,c0,c1)
+	local weld = i("Weld")
+	weld.Parent = part0
+	weld.Part0 = part0
+	weld.Part1 = part1
+	weld.C0 = c0 or cf_0
+	weld.C1 = c1 or cf_0
+	return weld
+end
+--[[
+function FLerp(weld, targetCF, alpha)
+    -- Create InitialCF if it doesn't exist
+if not weld or not targetCF then return end
+    weld.C0 = weld.C0:Lerp(weld.C0,targetCF, alpha)
+end]]
+function Mesh(parent,meshtype,meshid,textid,scale,offset)
+	local part = i("SpecialMesh")
+	part.MeshId = meshid or ""
+	part.TextureId = textid or ""
+	part.Scale = scale or v3(1,1,1)
+	part.Offset = offset or v3_0
+	part.MeshType = meshtype or Enum.MeshType.Sphere
+	part.Parent = parent
+	return part
+end
+if(Char:FindFirstChild('NGRWings'..Player.Name))then
+	Char['NGRWings'..Player.Name]:destroy()
+end
+for _,v in next, Char:children() do
+	if(v.Name:lower():find'wings')then 
+		v:destroy()
+	end
+end
+local wingModel =i("Model",Char)
+wingModel.Name="NGRWings"..Player.Name
+local rightWing = NewInstance("Model",wingModel,{Name='Right'})
+local leftWing = NewInstance("Model",wingModel,{Name='Left'})
+local MPASword = {}
+for _,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+	if v.Name:find("MeshPartAccessory") then
+		table.insert(MPASword,v)
+	end
+end
+local SWORD1 = WingPiece:Clone();
+if MPASword[1] then
+	for _,v in pairs(SWORD1:GetChildren()) do
+		if v:IsA("BasePart") then
+			v.Transparency = 1
+		end
+	end
+	local HatChoice = MPASword[1]
+    if HatChoice and HatChoice.Handle then
+        -- Ensure alignments exist
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignPosition") then
+            i("AlignPosition", HatChoice.Handle)
+        end
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignOrientation") then
+            i("AlignOrientation", HatChoice.Handle)
+        end
+	local athp =i("Attachment",SWORD1.PrimaryPart)
+	local atho =i("Attachment",SWORD1.PrimaryPart)
+
+	local HatChoice = MPASword[1]
+	print(MPASword[1].Handle.Name)
+	HatChoice.Handle:FindFirstChildOfClass("AlignPosition").Attachment1 = athp
+	HatChoice.Handle:FindFirstChildOfClass("AlignOrientation").Attachment1 = atho
+
+	athp.Position = v3(0,0,0)
+	atho.Rotation = v3(0,0,0)
+	table.remove(MPASword,1)
+end
+end
+SWORD1.Parent = leftWing
+local SWORD2 = WingPiece:Clone();
+if MPASword[1] then
+	for _,v in pairs(SWORD2:GetChildren()) do
+		if v:IsA("BasePart") then
+			v.Transparency = 1
+		end
+	end
+	local HatChoice = MPASword[1]
+	if HatChoice and HatChoice.Handle then
+        -- Ensure alignments exist
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignPosition") then
+            i("AlignPosition", HatChoice.Handle)
+        end
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignOrientation") then
+            i("AlignOrientation", HatChoice.Handle)
+        end
+	local athp =i("Attachment",SWORD2.PrimaryPart)
+	local atho =i("Attachment",SWORD2.PrimaryPart)
+
+	HatChoice.Handle:FindFirstChildOfClass("AlignPosition").Attachment1 = athp
+	HatChoice.Handle:FindFirstChildOfClass("AlignOrientation").Attachment1 = atho
+
+	athp.Position = v3(0,0,0)
+	atho.Rotation = v3(0,0,0)
+	table.remove(MPASword,1)
+end
+end
+SWORD2.Parent = leftWing
+local SWORD3 = WingPiece:Clone();
+if MPASword[1] then
+	for _,v in pairs(SWORD3:GetChildren()) do
+		if v:IsA("BasePart") then
+			v.Transparency = 1
+		end
+	end
+	local HatChoice = MPASword[1]
+	if HatChoice and HatChoice.Handle then
+        -- Ensure alignments exist
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignPosition") then
+            i("AlignPosition", HatChoice.Handle)
+        end
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignOrientation") then
+            i("AlignOrientation", HatChoice.Handle)
+        end
+	local athp =i("Attachment",SWORD3.PrimaryPart)
+	local atho =i("Attachment",SWORD3.PrimaryPart)
+
+	HatChoice.Handle:FindFirstChildOfClass("AlignPosition").Attachment1 = athp
+	HatChoice.Handle:FindFirstChildOfClass("AlignOrientation").Attachment1 = atho
+
+	athp.Position = v3(0,0,0)
+	atho.Rotation = v3(0,0,0)
+	table.remove(MPASword,1)
+end
+end
+SWORD3.Parent = rightWing
+local SWORD4 = WingPiece:Clone();
+if MPASword[1] then  -- This will assign the 4th sword
+    for _,v in pairs(SWORD4:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Transparency = 1
+        end
+    end
+    local HatChoice = MPASword[1]
+    if HatChoice and HatChoice.Handle then
+        -- Ensure alignments exist
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignPosition") then
+            i("AlignPosition", HatChoice.Handle)
+        end
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignOrientation") then
+            i("AlignOrientation", HatChoice.Handle)
+        end
+    local athp =i("Attachment",SWORD4.PrimaryPart)
+    local atho =i("Attachment",SWORD4.PrimaryPart)
+
+    HatChoice.Handle:FindFirstChildOfClass("AlignPosition").Attachment1 = athp
+    HatChoice.Handle:FindFirstChildOfClass("AlignOrientation").Attachment1 = atho
+
+    athp.Position = v3(0,0,0)
+    atho.Rotation = v3(0,0,0)
+    table.remove(MPASword,1)
+end
+end
+SWORD4.Parent = rightWing
+local DAURA = WingPiece:Clone();
+if game.Players.LocalPlayer.Character:FindFirstChild("Divine Aura") then -- Divine Aura
+	for _,v in pairs(DAURA:GetChildren()) do
+		if v:IsA("BasePart") then
+			v.Transparency = 1
+		end
+	end
+	local HatChoice = game.Players.LocalPlayer.Character:FindFirstChild("Divine Aura") --divine Aura
+	if HatChoice and HatChoice.Handle then
+        -- Ensure alignments exist
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignPosition") then
+            i("AlignPosition", HatChoice.Handle)
+        end
+        if not HatChoice.Handle:FindFirstChildOfClass("AlignOrientation") then
+            i("AlignOrientation", HatChoice.Handle)
+        end
+	local athp =i("Attachment",DAURA.PrimaryPart)
+	local atho =i("Attachment",DAURA.PrimaryPart)
+
+	HatChoice.Handle:FindFirstChildOfClass("AlignPosition").Attachment1 = athp
+	HatChoice.Handle:FindFirstChildOfClass("AlignOrientation").Attachment1 = atho
+
+	athp.Position = v3(0,0,0)
+	atho.Rotation = v3(0,0,0)
+end
+end
+DAURA.Parent = rightWing
+local s1=Weld(SWORD1.PrimaryPart,Torso,cf(0,0,0)*angles(0,0,0))
+local s2=Weld(SWORD2.PrimaryPart,Torso,cf(0,0,0)*angles(0,0,mrandom(-15,-15)))
+local s3=Weld(SWORD3.PrimaryPart,Torso,cf(0,0,0)*angles(0,0,0))
+local s4=Weld(SWORD4.PrimaryPart,Torso,cf(0,0,0)*angles(0,0,mrandom(-15,-15)))
+local aura1=Weld(DAURA.PrimaryPart,Torso,cf(0,0,0)*angles(0,0,mrandom(-30,-30)))
+
+---- Get Modes ----
+function getMode(modeName)
+	for i,v in next, modeInfo do
+		if(v.Name==modeName)then
+			return v
+		end
+	end
+	return modeInfo[1]
+end
+function changeMode(modeName)
+	local info = getMode(modeName)
+	Mode=info.Name;
+	humws=info.WalkSpeed;
+	Q.Text = info.Name;
+	Q.Font=info.Font;
+	WingAnim=info.WingAnim or "Nameless1"
+end
+---- Get Modes ----
+uis.InputBegan:Connect(function(io,gpe)
+      if (io.KeyCode==Enum.KeyCode.One and Mode~="Nameless")then
+            changeMode"Nameless"
+             Mode="Nameless"
+          end
+      if (io.KeyCode==Enum.KeyCode.Two and Mode~="Abyssal" )then
+           changeMode"Abyssal"
+           Mode="Abyssal"
+           end
+      if (io.KeyCode==Enum.KeyCode.Three and Mode~="Swordsman") then
+           changeMode"Swordsman"
+           Mode="Swordsman"
+           end 
+      if (io.KeyCode==Enum.KeyCode.Four and Mode~="Fallen") then 
+           changeMode"Fallen"
+           Mode="Fallen"
+           end
+      if (io.KeyCode==Enum.KeyCode.Five and Mode~="Apex") then
+           changeMode"Apex"
+           Mode="Apex"
+           end 
+      if (io.KeyCode==Enum.KeyCode.Six and Mode~="Dual-Wielder") then 
+           changeMode"Dual-Wielder"
+           Mode="Dual-Wielder"
+           end
+     -- end
+end)
+
+---- Get Modes ----
+------------------------------------------------------------------
+---- WINGS
+WingAnims.Nameless1=function()
+s1.C0=Lerp(s1.C0,cfMul(cf(2,2.1,-3-0.55*sin(sine*2)),angles(1.5707963267948966,17.453292519943297*sin(sine*0.15),0)),deltaTime) 
+s3.C0=Lerp(s3.C0,cfMul(cf(2,1.9,-3-0.55*sin(sine*2)),angles(1.5707963267948966,3.141592653589793+17.453292519943297*sin(sine*0.15),0)),deltaTime) 
+ s2.C0=Lerp(s2.C0,cfMul(cf(2,2,-0.95),angles(0,0,4.363323129985824+0.8726646259971648*sin(sine*2))),deltaTime)  
+ aura1.C0=Lerp(aura1.C0,cfMul(cf(2.5,0.55,-4-0.55*sin(sine*2)),angles(1.6580627893946132,0,-0.17453292519943295)),deltaTime) 
+ s4.C0=Lerp(s4.C0,cfMul(cf(2,2,-0.95),angles(0,0,-0.8726646259971648*sin(sine*2))),deltaTime)
+
+end
+WingAnims.Swords=function()
+s1.C0=Lerp(s1.C0,cfMul(cf(1.85+0.1*sin(sine*1.15),4-0.15*sin(sine*1.15),-0.65-0.1*sin(sine*1.15)),angles(0,0,1.5707963267948966)),deltaTime) 
+s2.C0=Lerp(s2.C0,cfMul(cf(0.45,2.75+0.2*sin(sine*1.155),-1.55),angles(1.5707963267948966,-1.5707963267948966,1.5707963267948966)),deltaTime) 
+s3.C0=Lerp(s3.C0,cfMul(cf(2.35,2.55-0.15*sin(sine*1.15),-1.55),angles(0,0,1.5707963267948966+3.141592653589793*sin(sine*1))),deltaTime) 
+s4.C0=Lerp(s4.C0,cfMul(cf(2.35,2.55-0.15*sin(sine*1.15),-1.55),angles(0,0,4.71238898038469+3.141592653589793*sin(sine*1))),deltaTime)
+aura1.C0=Lerp(aura1.C0,cfMul(cf(0,-4,-2),angles(0.3490658503988659,0,0)),deltaTime)
+end
+WingAnims.Dual=function()
+aura1.C0=Lerp(aura1.C0,cfMul(cf(0,-0.15 * sin(sine*1.15),-1.1),angles(0,0,-17.453292519943297*sin(sine*0.25))),deltaTime)
+s1.C0=Lerp(s1.C0,cfMul(cf(1.34,4.25,-0.6+0.15*sin(sine*1.15)),angles(1.6580627893946132,-2.443460952792061,0.4363323129985824)),deltaTime)
+s2.C0=Lerp(s2.C0,cfMul(cf(2.35,2.35-0.15*sin(sine*1.25),-1.1),angles(0,0,3.9269908169872414+0.7853981633974483*sin(sine*1))),deltaTime)
+s3.C0=Lerp(s3.C0,cfMul(cf(2.35,2.35-0.15*sin(sine*1.15),-1.1),angles(0,0,0.8726646259971648-0.7853981633974483*sin(sine*1))),deltaTime) 
+s4.C0=Lerp(s4.C0,cfMul(cf(2.55,-0.15,-1+0.15*sin(sine*1.15)),angles(1.6580627893946132,0.6457718232379019,0.4363323129985824)),deltaTime)
+
+end
+WingAnims.Hunter=function()
+s1.C0=Lerp(s1.C0,cfMul(cf(2.35,2.25,7.5-0.15*sin(sine*1.15)),angles(0,0,17.453292519943297*sin(sine*0.15))),deltaTime)
+s2.C0=Lerp(s2.C0,cfMul(cf(2.35,2.25,7.5-0.15*sin(sine*1.15)),angles(0,0,1.5707963267948966+17.453292519943297*sin(sine*0.15))),deltaTime) 
+ s3.C0=Lerp(s3.C0,cfMul(cf(2.35,2.25,7.5-0.15*sin(sine*1.15)),angles(0,0,3.141592653589793+17.453292519943297*sin(sine*0.15))),deltaTime) 
+ s4.C0=Lerp(s4.C0,cfMul(cf(2.35,2.25,7.5-0.15*sin(sine*1.15)),angles(0,0,4.71238898038469+17.453292519943297*sin(sine*0.15))),deltaTime) 
+ aura1.C0=Lerp(aura1.C0,cfMul(cf(0,0,7.5-0.15*sin(sine*1.15)),angles(0,0,-17.453292519943297*sin(sine*0.15))),deltaTime)
+end
+WingAnims.Clock=function()
+s1.C0=Lerp(s1.C0,cfMul(cf(2.35,2.35,-1),angles(0,0,2.356194490192345+17.453292519943297*sin(sine*0.25))),deltaTime)
+s2.C0=Lerp(s2.C0,cfMul(cf(2.75+0.25*sin(sine*1.15),2.35+0.15*sin(sine*1.25),-2.35),angles(1.5707963267948966,-0.08726646259971647+0.08726646259971647*sin(sine*1.25),-1.5707963267948966)),deltaTime)  
+s3.C0=Lerp(s3.C0,cfMul(cf(2.35,2.35,-1),angles(0,0,3.9269908169872414-0.7853981633974483*sin(sine*1.15))),deltaTime) 
+s4.C0=Lerp(s4.C0,cfMul(cf(2.35,2.35,-1),angles(0,0,0.7853981633974483+0.7853981633974483*sin(sine*1.15))),deltaTime)
+aura1.C0=Lerp(aura1.C0,cfMul(cf(0,0,-1),angles(0,0,-17.453292519943297*sin(sine*0.15))),deltaTime)
+
+end
+WingAnims.Memory=function()
+s1.C0=Lerp(s1.C0,cfMul(cf(1.75-0.15*sin(sine*1.15),3-0.15*sin(sine*1.15),1.55),angles(-1.6580627893946132,0.6283185307179586,1.5707963267948966)),deltaTime)
+s2.C0=Lerp(s2.C0,cfMul(cf(2.35,2.35,-2),angles(0,0,1.3089969389957472-17.453292519943297*sin(sine*0.25))),deltaTime)
+s3.C0=Lerp(s3.C0,cfMul(cf(2.35,2.35,-2),angles(0,0,3.4033920413889427-17.453292519943297*sin(sine*0.25))),deltaTime)
+s4.C0=Lerp(s4.C0,cfMul(cf(2.35,2.35,-2),angles(0,0,5.497787143782138-17.453292519943297*sin(sine*0.25))),deltaTime)
+aura1.C0=Lerp(aura1.C0,cfMul(cf(0,0,-2),angles(0,0,7.853981633974483*sin(sine*0.25))),deltaTime)
+end
+
+
+
+
+
+--[[
+local RootJoint ={C0 = cf(), C1 = cf()}
+local RightShoulder = {C0 = cf(1.5,0.5,0), C1 = cf(0,0.5,0)}
+local LeftShoulder = {C0 = cf(-1.5,0.5,0), C1 = cf(0,0.5,0)}
+local RightHip = {C0 = cf(0.5,-1,0), C1 = cf(0,1,0)}
+local LeftHip = {C0 = cf(-0.5,-1,0), C1 = cf(0,1,0)}
+local Neck = {C0 = cf(0,1.5,0), C1 = cf()}
+]]
+
+--deltaTime *=1
+local render=nil
+render=renderstepped:Connect(function(dt)
+--while wait() do
+deltaTime=dt*2.5
+sine=osclock()
+if WingAnims[WingAnim] and not HumanDied then
+     WingAnims[WingAnim]()
+     end
+if Mode=="Nameless" then 
+welds.Neck.C0=Lerp(welds.Neck.C0,cfMul(cf(0,1,0),angles(-1.95,0,3.141592653589793)),deltaTime) 
+welds.RightShoulder.C0=Lerp(welds.RightShoulder.C0,cfMul(cf(1.75,0.65+0.25*sin(sine*2),0),angles(-0.08726646259971647+0.17453292519943295*sin(sine*2),-0.3490658503988659,0.3490658503988659+0.08726646259971647*sin(sine*2))),deltaTime)
+
+welds.LeftHip.C0=Lerp(welds.LeftHip.C0,cfMul(cf(-0.25,-0.95+0.15*sin(sine*2),-.15),angles(-0.3490658503988659,0.3490658503988659,-0.17453292519943295+0.08726646259971647*sin(sine*2))),deltaTime) 
+welds.RightHip.C0=Lerp(welds.RightHip.C0,cfMul(cf(.50,-1,-.50),angles(0.17453292519943295*sin(sine*2),-0.3490658503988659,0)),deltaTime)  
+welds.LeftShoulder.C0=Lerp(welds.LeftShoulder.C0,cfMul(cf(-1.5,0.75+0.25*sin(sine*2),0.55),angles(3.141592653589793,-0.3490658503988659,-0.6981317007977318)),deltaTime) 
+welds.RootJoint.C0=Lerp(welds.RootJoint.C0,cfMul(cf(0,7.5+0.95*sin(sine*2),0),angles(-0.2,0,0)),deltaTime)
+   end
+if Mode=="Abyssal" then
+welds.RootJoint.C0=Lerp(welds.RootJoint.C0,cfMul(cf(0,-0.25 * sin(sine*1.15),0),angles(1,0,-3.141592653589793)),deltaTime)   
+welds.LeftHip.C0=Lerp(welds.LeftHip.C0,cfMul(cf(-.5,-1,0),angles(-0.7853981633974483-0.17453292519943295*sin(sine*1.15),0,0)),deltaTime) 
+welds.LeftShoulder.C0=Lerp(welds.LeftShoulder.C0,cfMul(cf(-1.25,1.16,-0.45+0.1*sin(sine*1.15)),angles(1.5707963267948966,0.3490658503988659,-0.2617993877991494)),deltaTime) 
+welds.RightShoulder.C0=Lerp(welds.RightShoulder.C0,cfMul(cf(1.25,0,-0.25+0.15*sin(sine*1.15)),angles(-1.0471975511965976-0.17453292519943295*sin(sine*1.16),0.3490658503988659,0.17453292519943295)),deltaTime) 
+welds.Neck.C0=Lerp(welds.Neck.C0,cfMul(cf(0,1,0.05 * sin(sine*1.15)),angles(-2.007128639793479,0,3.141592653589793)),deltaTime) 
+welds.RightHip.C0=Lerp(welds.RightHip.C0,cfMul(cf(.50,-1,0),angles(-1.3089969389957472-0.17453292519943295*sin(sine*1.15),1.5707963267948966,0)),deltaTime)  
+ 
+       end
+if Mode=="Swordsman" then
+welds.Neck.C0=Lerp(welds.Neck.C0,cfMul(cf(0,1,0),angles(-1.9198621771937625+0.08726646259971647*sin(sine*1.15),0,3.141592653589793)),deltaTime) 
+ welds.LeftShoulder.C0=Lerp(welds.LeftShoulder.C0,cfMul(cf(-1.45,0+0.15*sin(sine*1),0),angles(-0.7853981633974483,0.3490658503988659,-0.6108652381980153+0.17453292519943295*sin(sine*1.15))),deltaTime) 
+ welds.RootJoint.C0=Lerp(welds.RootJoint.C0,cfMul(cf(0,1-0.25*sin(sine*1.25),0),angles(0+0.08726646259971647*sin(sine*1.15),0,0)),deltaTime) 
+ welds.LeftHip.C0=Lerp(welds.LeftHip.C0,cfMul(cf(-0.50,-0.55,-0.55),angles(-0.3490658503988659+0.17453292519943295*sin(sine*1.15),-1.5707963267948966,0)),deltaTime) 
+ welds.RightHip.C0=Lerp(welds.RightHip.C0,cfMul(cf(0.50,-.95,0.25),angles(-0.8726646259971648-0.17453292519943295*sin(sine*1.15),0.4363323129985824,0)),deltaTime)  
+ welds.RightShoulder.C0=Lerp(welds.RightShoulder.C0,cfMul(cf(1,0.35-0.15*sin(sine*1.15),-0.25),angles(1.5707963267948966-0.04363323129985824*sin(sine*1.15),0.3490658503988659,0)),deltaTime) 
+end
+if Mode=="Fallen" then 
+welds.RightShoulder.C0=Lerp(welds.RightShoulder.C0,cfMul(cf(1.25,0.25-0.15*sin(sine*1.15),0),angles(0.17453292519943295,0.3490658503988659,0.5235987755982988)),deltaTime)
+ welds.LeftShoulder.C0=Lerp(welds.LeftShoulder.C0,cfMul(cf(-1,0.5+0.15*sin(sine*1.1),-1),angles(1.5707963267948966,0,1.4835298641951802)),deltaTime)
+welds.Neck.C0=Lerp(welds.Neck.C0,cfMul(cf(0,0.85-0.1*sin(sine*1.15),0),angles(-2.007128639793479-0.11344640137963143*sin(sine*1.15),0,3.141592653589793)),deltaTime)
+ welds.RootJoint.C0=Lerp(welds.RootJoint.C0,cfMul(cf(0,1.25-0.15*sin(sine*1.15),0),angles(0,0,0)),deltaTime)
+ welds.RightHip.C0=Lerp(welds.RightHip.C0,cfMul(cf(.50,-1-0.15*sin(sine*1.15),-.75),angles(-0.9599310885968813+0.17453292519943295*sin(sine*1),1.5707963267948966,0)),deltaTime)
+ welds.LeftHip.C0=Lerp(welds.LeftHip.C0,cfMul(cf(-.50,-0.45-0.15*sin(sine*1.15),-0.85),angles(0.08726646259971647-0.08726646259971647*sin(sine*1.15),-1.5707963267948966,0)),deltaTime)
+end
+if Mode=="Apex" then 
+welds.LeftShoulder.C0=Lerp(welds.LeftShoulder.C0,cfMul(cf(-1.55,0,0),angles(-0.17453292519943295+0.3490658503988659*sin(sine*1.15),0.3490658503988659,-0.7853981633974483)),deltaTime) 
+ welds.RightHip.C0=Lerp(welds.RightHip.C0,cfMul(cf(.50,-0.75-0.25*sin(sine*1.15),-0.55),angles(-0.5235987755982988+0.08726646259971647*sin(sine*1.25),1.5707963267948966,0)),deltaTime) 
+welds.RightShoulder.C0=Lerp(welds.RightShoulder.C0,cfMul(cf(0.75,.60-0.15 * sin(sine*1.15),-0.55),angles(1.9198621771937625,2.356194490192345,0.9599310885968813)),deltaTime)
+welds.Neck.C0=Lerp(welds.Neck.C0,cfMul(cf(0,1-0.05*sin(sine*1.15),0),angles(-2.181661564992912,0,3.141592653589793)),deltaTime) 
+  welds.RootJoint.C0=Lerp(welds.RootJoint.C0,cfMul(cf(0,-0.25 * sin(sine*1.15),0),angles(-0.5-0.17453292519943295*sin(sine*1.15),0,0)),deltaTime) 
+ welds.LeftHip.C0=Lerp(welds.LeftHip.C0,cfMul(cf(-.50,-0.75-0.25*sin(sine*1.15),0),angles(-0.3490658503988659-0.08726646259971647*sin(sine*1.15),-1.5707963267948966,0)),deltaTime)
+end
+if Mode=="Dual-Wielder" then
+welds.Neck.C0=Lerp(welds.Neck.C0,cfMul(cf(0,1.1-0.05*sin(sine*1.15),0),angles(-1.7453292519943295,0,3.141592653589793)),deltaTime) 
+ welds.LeftShoulder.C0=Lerp(welds.LeftShoulder.C0,cfMul(cf(-1.45,-0.15-0.15*sin(sine*1),0),angles(-0.7853981633974483,0.3490658503988659,-0.6108652381980153+0.17453292519943295*sin(sine*1.15))),deltaTime) 
+ welds.RootJoint.C0=Lerp(welds.RootJoint.C0,cfMul(cf(0,1-0.25*sin(sine*1.25),0),angles(-.1-0.08726646259971647*sin(sine*1.15),0,0)),deltaTime) 
+ welds.LeftHip.C0=Lerp(welds.LeftHip.C0,cfMul(cf(-0.50,-0.55,-0.55),angles(-0.3490658503988659+0.17453292519943295*sin(sine*1.15),-1.5707963267948966,0)),deltaTime) 
+welds.RightHip.C0 =Lerp(welds.RightHip.C0,cfMul(cf(0.50,-0.75,0),angles(-0.8726646259971648-0.17453292519943295*sin(sine*1.15),0.4363323129985824,0)),deltaTime)  
+ welds.RightShoulder.C0=Lerp(welds.RightShoulder.C0,cfMul(cf(1,0.35-0.15*sin(sine*1.15),-0.25),angles(1.5707963267948966-0.04363323129985824*sin(sine*1.15),0.3490658503988659,0.17453292519943295)),deltaTime)
+ 
+     end
+end)
